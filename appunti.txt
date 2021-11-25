@@ -1,0 +1,6 @@
+i campi VendorID, passenger_count, RatecodeID, store_and_fwd_flag, payment_type
+hanno campi nulli in 127296 ID.
+problema: la media sulla series store_and_fwd_flag non si può fare poichè la classe indicata è un oggetto
+ratecode nullo, risalendo al DOLocationID riusciamo a sapere se ad esempio uno arriva all'aereoporto 
+store_and_fwd_flag e vendorID non possono essere colmati con un campo specifico, ne media, ne mediana ne altre cose
+payment type potremmo inserire la voce 5 unknown se il dato non viene fornito
