@@ -13,7 +13,7 @@ import pandas as pd
 import numpy as np
 import matplotlib as plt
 
-#per allegerire il file abbiamo caricato da file csv solo le prime 20 colonne
+#per allegerire il file abbiamo caricato da file csv
 taxi_df = pd.read_csv('./Data/yellow_tripdata_2021-05.csv')
 
 taxi_df.info()
