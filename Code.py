@@ -13,13 +13,10 @@ import pandas as pd
 import numpy as np
 import matplotlib as plt
 
-#per allegerire il file abbiamo caricato da file csv i primi 20 campi
-taxi_df = pd.read_csv('./Data/yellow_tripdata_2021-05.csv').head(20)
+#per allegerire il file abbiamo caricato da file csv solamente le series utili al progetto
+taxi_df = pd.read_csv('./Data/yellow_tripdata_2021-05.csv',usecols=['tpep_pickup_datetime','tpep_dropoff_datetime', 'trip_distance', 'PULocationID', 'DOLocationID'])
 
 zone_df = pd.read_csv('./Data/taxi_zone_lookup.csv')
-
-taxi_df.info()
-
 
 taxi_df.rename(columns={
         'tpep_pickup_datetime': 'Inizio_corsa', 
@@ -28,9 +25,11 @@ taxi_df.rename(columns={
 taxi_df["Inizio_corsa"].apply(lambda x: pd.Timestamp(x)).astype('int64') // 10**9
 taxi_df["Fine_corsa"].apply(lambda x: pd.Timestamp(x)).astype('int64') // 10**9
 
-#aggiungere ai campi vuoti di payment type il valore di unknown
+#nel caso in cui una distanza sia nulla riempio con la media delle distanze presente nel file 
+distance = taxi_df['trip_distance']
+distance_mean=distance.mean()
+taxi_df.fillna(distance_mean, inplace=True)
 
-taxi_df['payment_type'].fillna(value='5.0', inplace = True)
 
 
 
