@@ -15,7 +15,7 @@ Output: file, grafico
 """
 import numpy as np
 import pandas as pd
-import matplotlib as plt
+import matplotlib.pyplot as plt 
 from datetime import datetime
 
 """
@@ -38,5 +38,10 @@ Per soddisfare la prima richiesta:
     in ore/giorni 
 
 """
-inizio_corsa = taxi_df["tpep_pickup_datetime"].apply(lambda x: pd.Timestamp(x)).astype('int64')//10**9;
+#inizio_corsa = taxi_df["tpep_pickup_datetime"].apply(lambda x: pd.Timestamp(x)).astype('int64')//10**9;
+inizio_corsa = taxi_df["tpep_pickup_datetime"]
+print(inizio_corsa)
 
+plt.figure(figsize=(5,8))
+plt.boxplot(inizio_corsa)
+plt.show()
