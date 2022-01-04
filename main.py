@@ -1,21 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 25 09:23:51 2021
-
-@author: Daniele
-"""
-
-"""
-Progetto Daniele Mercuri - luca Bracaglia - Alessandro Frisenda
-
-Legge i CSV di un file esterno e ne effettua alcune modifiche
-"""
-
 import numpy as np
 import pandas as pd
 import matplotlib as plt
 from datetime import datetime
-#import Utils
+from Utils.corse import Corse
 
 
 '''
@@ -76,17 +63,7 @@ try:
         delta = delta.total_seconds()
         conteggio.append(delta)
         i = i + 1
-        
-        '''if b < a:
-            delta = b - a
-            conteggio=conteggio.append(delta)
-            print(conteggio)
-            continue
-        else:
-            print ('La differenza tra le due date è di giorni.')
-            continue'''
-        
-    
+   
 except:
     print('Rilevati problemi con formattazione dati inserite (dd/mm/aaa)')
 
@@ -95,91 +72,33 @@ except:
 calcolata la durata di ogni viaggio (conteggio), le inserisco in una series in modo da calcolarne la media e, in seguito creare un dataframe
 con tutte le corse che durano più della media.
  '''
-differenza = pd.Series(conteggio)
-media = differenza.mean()
-upper_quartile=np.percentile(differenza, 75)
-lower_quartile=np.percentile(differenza, 25)
-superiori=list()
-inizio=list()
-zona=list()
-nomi_zone=list()
+durata_corse = pd.Series(conteggio)
+media = durata_corse.mean()
+upper_quartile=np.percentile(durata_corse, 75)
+lower_quartile=np.percentile(durata_corse, 25)
+
+'''istanza delle diverse corse'''
+corsa_media = Corse(media, durata_corse, inizio_corsa, zone, zone_df)
+corsa_lunga = Corse(upper_quartile, durata_corse, inizio_corsa, zone, zone_df)
+corsa_breve = Corse(lower_quartile, durata_corse, inizio_corsa, zone, zone_df)
 
 
-
-'''
-Vorrei associare all' id di una zona il corrispettivo nome sfruttando il legamen in zone_df
- z= zone_df.loc[zone_df['LocationID'] == zona[i]]
- nome = z['Zone']
- nome_zona.append(nome)'''
-
-i=0
-while i<len(differenza):
-    if differenza[i] > upper_quartile:
-        inizio.append(inizio_corsa[i])
-        superiori.append(differenza[i])
-        zona.append(zone[i])
-        nome_zona=zone_df.loc[zone[i]]['Zone']
-        nomi_zone.append(nome_zona)
-        i = i + 1
-        
-    else: 
-        i= i+1
- 
-        
-data_upper = {
-                'id_zona': zona,
-                'nome_zona':nomi_zone,
-                'inizio': inizio,
-                'durata': superiori,
-              }        
+data_upper= corsa_lunga.durata_corsa('upper')
+data_lower= corsa_breve.durata_corsa('lower')
+data_mediaup= corsa_breve.durata_corsa('upper')
+data_medialow= corsa_breve.durata_corsa('lower')
 
 '''il dataframe Corse lunghe contiene l'id zona, l'inizio della corsa e la durata del un viaggio'''
 
 Corse_lunghe = pd.DataFrame(data_upper)
 
-
-
-inferiori=list()
-inizio=list()
-zona=list()
-nomi_zone=list()
-
-i=0
-while i<len(differenza):
-    if differenza[i] < lower_quartile:
-        inizio.append(inizio_corsa[i])
-        inferiori.append(differenza[i])
-        zona.append(zone[i])
-        nome_zona=zone_df.loc[zone[i]]['Zone']
-        nomi_zone.append(nome_zona)
-        i = i + 1
-        
-    else: 
-        i= i+1
- 
-        
-data_lower = {
-                'id_zona': zona,
-                'nome_zona':nomi_zone,
-                'inizio': inizio,
-                'durata': inferiori,
-              }        
-
 '''il dataframe Corse brevi contiene l'id zona, l'inizio della corsa e la durata del un viaggio'''
 
 Corse_brevi = pd.DataFrame(data_lower)
 
+Corse_medieu = pd.DataFrame(data_mediaup)
 
-'''istogramma zone più popolose
-labels = list()
-for i in Corse_lunghe:
-    label = Corse_lunghe['id_zona'][1]
-    labels.append(label)
-'''
-
-
-    
-
+Corse_mediel = pd.DataFrame(data_medialow)
 
 
 
@@ -187,11 +106,3 @@ for i in Corse_lunghe:
 
 #Corse_lunghe.to_csv('Output/Corse_lunghe.csv')
 #Corse_brevi.to_csv('Output/Corse_brevi.csv')
-
-
-
-
-         
-    
-
-
