@@ -77,6 +77,10 @@ media = durata_corse.mean()
 upper_quartile=np.percentile(durata_corse, 75)
 lower_quartile=np.percentile(durata_corse, 25)
 
+'''NB: NON ESTRE I DATI NEL MODO CORRERTTO QUESTA VERSIONE CON LA CLASSE "CORSE",
+    il file "Prova_02_12.py" li estrae correttamente ma è senza classi
+ '''
+
 '''istanza delle diverse corse'''
 corsa_media = Corse(media, durata_corse, inizio_corsa, zone, zone_df)
 corsa_lunga = Corse(upper_quartile, durata_corse, inizio_corsa, zone, zone_df)
