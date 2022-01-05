@@ -82,11 +82,10 @@ corsa_media = Corse(media, durata_corse, inizio_corsa, zone, zone_df)
 corsa_lunga = Corse(upper_quartile, durata_corse, inizio_corsa, zone, zone_df)
 corsa_breve = Corse(lower_quartile, durata_corse, inizio_corsa, zone, zone_df)
 
-
+'''crazione di due dizionari per la realizzazione di due dataframe'''
 data_upper= corsa_lunga.durata_corsa('upper')
 data_lower= corsa_breve.durata_corsa('lower')
-data_mediaup= corsa_breve.durata_corsa('upper')
-data_medialow= corsa_breve.durata_corsa('lower')
+
 
 '''il dataframe Corse lunghe contiene l'id zona, l'inizio della corsa e la durata del un viaggio'''
 
@@ -96,13 +95,15 @@ Corse_lunghe = pd.DataFrame(data_upper)
 
 Corse_brevi = pd.DataFrame(data_lower)
 
-Corse_medieu = pd.DataFrame(data_mediaup)
-
-Corse_mediel = pd.DataFrame(data_medialow)
+'''il codice successivvo è qualora l analisi si volesse svolgere dalla media invece che dai quartili superiroe ed inf'''
+#data_mediaup= corsa_media.durata_corsa('upper')
+#data_medialow= corsa_media.durata_corsa('lower')
+#Corse_medieu = pd.DataFrame(data_mediaup)
+#Corse_mediel = pd.DataFrame(data_medialow)
 
 
 
 '''salvataggio dei dati'''
 
-#Corse_lunghe.to_csv('Output/Corse_lunghe.csv')
-#Corse_brevi.to_csv('Output/Corse_brevi.csv')
+Corse_lunghe.to_csv('Output/Corse_lunghe.csv')
+Corse_brevi.to_csv('Output/Corse_brevi.csv')
